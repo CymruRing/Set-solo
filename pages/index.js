@@ -2,52 +2,79 @@
 // import styles from '../styles/App.module.css'
 import React from 'react';
 
-import Title from './AppComponents/Title.jsx';
-import Board from './AppComponents/Board.jsx';
+import Board from '../comps/Board.js';
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      deck: [],
-      board: []
-    };
-
-  }
-
-  componentDidMount () {
-    this.createDeck();
-  }
-
-  createDeck () {
+  // create deck and shuffle for game start/restart
+  const createDeck = () => {
+    let color = ['red', 'purple', 'green'];
+    let shape = ['diamond', 'oval', 'squiggle']
+    let pattern = ['solid', 'stripes', 'empty']
     let deck = [];
-    let colors = ['red', 'purple', 'green'];
-    let shapes = ['diamond', 'oval', 'squiggle']
-    let shades = ['solid', 'striped', 'open']
+    // create deck
     for(var i = 0; i < 3; i++) {
-      let color = colors[i];
       for(var j = 0; j < 3; j++) {
-        let shape = shapes[j];
         for(var k = 0; k < 3; k++) {
-          let shade = shades[k];
           for(var l = 1; l <= 3; l++) {
-            deck.push([color, shape, shade, l]);
+            deck.push({color: color[i], shape: shape[j], pattern: pattern[k], num: l});
           }
         }
       }
     }
     // shuffle deck
-    // console.log(deck);
+    for (let i = deck.length; i >= 0; i--) {
+      let j = Math.floor(Math.random() * i);
+      [deck[i], deck[j]] = [deck[j], deck[i]]; 
+    }
+    return deck;
   }
 
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    let initDeck = createDeck();
+    let initBoard = [];
+    for (let i = 0; i < 12; i++) {
+      initBoard.push(initDeck.pop());
+    }
+    this.state = {
+      deck: initDeck,
+      board: initBoard
+    };
+    
+  }
 
+  // Test for valid set given input of 3 cards
+  isSet(cards) {
+    if(cards.length !== 3) {
+      return false;
+    }
+    let allSame = 0;
+    let allDifferent = 0;
+    let properties = ['color', 'shape', 'shade', 'count'];
+    for(var i in properties) {
+      if(cards[0][i] == cards[1][i] == cards[2][i]){
+        allSame += 1;
+      } else if (cards[0][i]!= cards[1][i] != cards[2][i]) { // test
+        allDifferent += 1;
+      }
+    }
+    if (allSame == 3 || allDifferent == 4) {
+      return true;
+    }
+    return false;
+  }
+
+  // test if there are any sets on the board
+  // if false deal 3 more cards to max 15
+  // if 15 and false game over
+  validSetsExist() {
+    
+  }
 
   render () {
     return (
       <div>
-        <Title />
-        <Board />
-        <div>App</div>
+        <Board cards={this.state.board} />
       </div>
     )
   }
