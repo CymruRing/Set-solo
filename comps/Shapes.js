@@ -1,10 +1,75 @@
 
+
+let defs = (shape, color) => {
+  if(shape == 'oval') {
+    return(
+      <defs>
+        <pattern
+          id={`ovalStripes_${color}`}
+          patternTransform="rotate(90) scale(1.5 1)"
+          xlinkHref={`#Strips1_1_O_${color}`}
+        ></pattern>
+        <pattern
+          id={`Strips1_1_O_${color}`}
+          width="2"
+          height="1"
+          patternTransform="scale(10)"
+          patternUnits="userSpaceOnUse"
+        >
+          <path fill={color} stroke="none" d="M0 -0.5H1V1.5H0z"></path> 
+        </pattern>
+      </defs>
+    );    
+  } else if (shape == 'squiggle') {
+    return (
+      <defs>
+        <pattern
+          id={`squiggleStripes_${color}`}
+          patternTransform="rotate(90) scale(.4 1)"
+          xlinkHref={`#Strips1_1_S_${color}`}
+        ></pattern>
+        <pattern
+          id={`Strips1_1_S_${color}`}
+          width="2"
+          height="1"
+          patternTransform="scale(10)"
+          patternUnits="userSpaceOnUse"
+        >
+          <path fill={color} stroke="none" d="M0 -0.5H1V1.5H0z"></path>
+        </pattern>
+      </defs>
+    );
+  } else if (shape == 'diamond') {
+    return (
+      <defs>
+        {/* <pattern
+          id={`diamondStripes_${color}`}
+          patternTransform="rotate(45) scale(1 1)"
+          xlinkHref={`#Strips1_1_D_${color}`}
+        ></pattern> */}
+        <pattern
+          id={`diamondStripes_${color}`}
+          width="2"
+          height="1"
+          patternTransform="rotate(45) scale(1.1)"
+          patternUnits="userSpaceOnUse"
+        >
+          <path fill={color} stroke="none" d="M0 -0.5H1V1.5H0z"></path>
+        </pattern>
+      </defs>
+    );
+  }
+}
+
+
+
 function Shapes(props) {
+  console.log(props);
   let pattern = (props.pattern == 'empty') ? '#00000000' : props.pattern;
+  if(pattern !== '#00000000' ) {
+    pattern = (pattern === 'stripes') ? `url(#${props.shape}Stripes_${props.color})` : props.color;
+  }
   if(props.shape == 'oval') { // Oval --------------------------------------------
-    if(pattern !== '#00000000' ) {
-      pattern = (pattern === 'stripes') ? 'url(#ovalStripes)' : props.color;
-    }
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -13,22 +78,7 @@ function Shapes(props) {
         version="1.1"
         viewBox="0 0 50 100"
       >
-        <defs>
-          <pattern
-            id="ovalStripes"
-            patternTransform="matrix(0 1.65414 3.94175 0 0 0)"
-            xlinkHref="#Strips1_1_O"
-          ></pattern>
-          <pattern
-            id="Strips1_1_O"
-            width="2"
-            height="1"
-            patternTransform="scale(10)"
-            patternUnits="userSpaceOnUse"
-          >
-            <path fill={props.color} stroke="none" d="M0 -0.5H1V1.5H0z"></path> 
-          </pattern>
-        </defs>
+      {defs(props.shape, props.color)}
         <g display="inline" opacity="1">
           <rect
             width="44.908"
@@ -49,9 +99,6 @@ function Shapes(props) {
       </svg>
     );
   } else if(props.shape == 'squiggle') { // Squiggle -----------------------------
-    if(pattern !== '#00000000' ) {
-      pattern = (pattern === 'stripes') ? 'url(#squiggleStripes)' : props.color;
-    }
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -60,22 +107,7 @@ function Shapes(props) {
         version="1.1"
         viewBox="0 0 13.229 26.458"
       >
-        <defs>
-          <pattern
-            id="squiggleStripes"
-            patternTransform="matrix(0 .36887 -1.51045 0 0 0)"
-            xlinkHref="#Strips1_1_S"
-          ></pattern>
-          <pattern
-            id="Strips1_1_S"
-            width="2"
-            height="1"
-            patternTransform="scale(10)"
-            patternUnits="userSpaceOnUse"
-          >
-            <path fill={props.color} stroke="none" d="M0 -0.5H1V1.5H0z"></path>
-          </pattern>
-        </defs>
+      {defs(props.shape, props.color)}
         <g>
           <path
             fill={pattern}
@@ -93,9 +125,6 @@ function Shapes(props) {
       </svg>
     );
   } else if(props.shape == 'diamond') { // diamond -------------------------------
-    if(pattern !== '#00000000' ) {
-      pattern = (pattern === 'stripes') ? 'url(#diamondStripes)' : props.color;
-    }
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -104,23 +133,8 @@ function Shapes(props) {
         version="1.1"
         viewBox="0 0 50 100"
       >
-        <defs>
-          <pattern
-            id="diamondStripes"
-            patternTransform="rotate(45) scale(.69545 1.34202)"
-            xlinkHref="#Strips1_1_D"
-          ></pattern>
-          <pattern
-            id="Strips1_1_D"
-            width="2"
-            height="1"
-            patternTransform="scale(10)"
-            patternUnits="userSpaceOnUse"
-          >
-            <path fill={props.color} stroke="none" d="M0 -0.5H1V1.5H0z"></path>
-          </pattern>
-        </defs>
-        <g fill="url(#Strips1_1)" fillOpacity="1">
+        {defs(props.shape, props.color)}
+        <g>
           <path
             fill={pattern}
             fillOpacity="1"
@@ -144,3 +158,8 @@ function Shapes(props) {
 };
 
 export default Shapes;
+
+
+/*
+
+      */
