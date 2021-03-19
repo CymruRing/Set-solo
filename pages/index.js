@@ -15,39 +15,29 @@ import Board from '../comps/Board.js';
       for(var j = 0; j < 3; j++) {
         for(var k = 0; k < 3; k++) {
           for(var l = 1; l <= 3; l++) {
-            deck.push({color: color[i], shape: shape[j], pattern: pattern[k], num: l});
+            deck.push({shape: shape[i], color: color[j], pattern: pattern[k], num: l});
           }
         }
       }
     }
-    // shuffle deck
-    for (let i = deck.length; i >= 0; i--) {
-      let j = Math.floor(Math.random() * i);
-      [deck[i], deck[j]] = [deck[j], deck[i]]; 
+    let shuffledDeck = [];
+    for (i = 80; i >= 0; i--) {
+      let j = Math.floor(Math.random() * deck.length);
+      shuffledDeck.push(deck[j]);
+      deck.splice(j, 1);
     }
-    return deck;
+    return shuffledDeck;
   }
 
+  // Main App --------------------------------------------------------------------------
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     let initDeck = createDeck();
     let initBoard = [];
-    // for (let i = 0; i < 12; i++) {
-    //   initBoard.push(initDeck.pop());
-    // }
-    // for testing
-    initBoard.push(
-      {color: 'red', shape: 'diamond', pattern: 'stripes', num: 1},
-      {color: 'green', shape: 'diamond', pattern: 'stripes', num: 2},
-      {color: 'blue', shape: 'diamond', pattern: 'stripes', num: 1},
-      {color: 'blue', shape: 'oval', pattern: 'stripes', num: 1},
-      {color: 'red', shape: 'oval', pattern: 'stripes', num: 2},
-      {color: 'green', shape: 'oval', pattern: 'stripes', num: 2},
-      {color: 'green', shape: 'squiggle', pattern: 'stripes', num: 1},
-      {color: 'blue', shape: 'squiggle', pattern: 'stripes', num: 2},
-      {color: 'red', shape: 'squiggle', pattern: 'stripes', num: 3},
-    );
+    for (let i = 0; i < 9; i++) {
+      initBoard.push(initDeck.pop());
+    }
     this.state = {
       deck: initDeck,
       board: initBoard,

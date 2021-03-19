@@ -42,13 +42,13 @@ let defs = (shape, color) => {
   } else if (shape == 'diamond') {
     return (
       <defs>
-        {/* <pattern
+        <pattern
           id={`diamondStripes_${color}`}
           patternTransform="rotate(45) scale(1 1)"
           xlinkHref={`#Strips1_1_D_${color}`}
-        ></pattern> */}
+        ></pattern>
         <pattern
-          id={`diamondStripes_${color}`}
+          id={`#Strips1_1_D_${color}`}
           width="2"
           height="1"
           patternTransform="rotate(45) scale(1.1)"
@@ -64,7 +64,8 @@ let defs = (shape, color) => {
 
 
 function Shapes(props) {
-  console.log(props);
+  // console.log(props);
+
   let pattern = (props.pattern == 'empty') ? '#00000000' : props.pattern;
   if(pattern !== '#00000000' ) {
     pattern = (pattern === 'stripes') ? `url(#${props.shape}Stripes_${props.color})` : props.color;

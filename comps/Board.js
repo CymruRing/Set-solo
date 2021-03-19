@@ -1,13 +1,13 @@
 import Card from './Card'
 
 let Board = (props) => {
-let stripesId = props.stripesId;
-  console.log(props);
-  
   return (
     <div>
       {props.cards.map((aCard) => {
-        let key = aCard.color + aCard.shape + aCard.pattern + aCard.num;
+        if (!aCard) {
+          return (<></>);
+        }
+        let key = (aCard) ? aCard.color + aCard.shape + aCard.pattern + aCard.num : 'temp';
         aCard.key = key;
         return (
           <div>
